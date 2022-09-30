@@ -63,7 +63,8 @@
     - nonce: "&to_int(_)"
     - public_key: "&strip(_)"
     - index: "&to_int(transaction_index)"
-    - size: "&get_size(raw)"
+    # Erigon does not provide raw field
+    # - size: "&get_size(raw)"
     - total: "&to_int(value)"
     - raw: "&strip(_)"
     - r: "&strip(_)"

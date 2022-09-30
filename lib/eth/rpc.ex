@@ -6,11 +6,12 @@ defmodule OcapRpc.Internal.EthRpc do
   require Logger
 
   alias OcapRpc.Converter
+  alias OcapRpc.Internal.Utils
 
   # plug(Tesla.Middleware.Retry, delay: 500, max_retries: 3)
 
   @headers [{"content-type", "application/json"}]
-  @timeout :ocap_rpc |> Application.get_env(:eth) |> Keyword.get(:timeout)
+  @timeout Utils.get_timeout(:eth)
 
   plug(Tesla.Middleware.Headers, @headers)
 
@@ -20,8 +21,7 @@ defmodule OcapRpc.Internal.EthRpc do
   end
 
   def call(method, args) do
-    %{hostname: hostname, port: port} =
-      :ocap_rpc |> Application.get_env(:eth) |> Keyword.get(:conn)
+    %{hostname: hostname, port: port} = Utils.get_connection(:eth)
 
     body = get_body(method, args)
     # Logger.debug("Ethereum RPC request for: #{inspect(body)}}")
@@ -41,9 +41,7 @@ defmodule OcapRpc.Internal.EthRpc do
 
       {:error, reason} ->
         raise(
-          "RPC call failed. Reason: #{inspect(reason)}, method: #{inspect(method)}, arguments: #{
-            inspect(args)
-          }"
+          "RPC call failed. Reason: #{inspect(reason)}, method: #{inspect(method)}, arguments: #{inspect(args)}"
         )
 
       # TODO: unfortunately eth json rpc returns everything as 200, break out here as a TODO

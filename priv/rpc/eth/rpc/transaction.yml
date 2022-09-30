@@ -52,3 +52,8 @@ public:
     method: trace_transaction
     args: ["hash"]
     result: trace
+  - name: get_transaction_count
+    desc: Returns the number of transactions sent from an address. Integer block number encoded as a hexadecimal, or the string 'latest', 'earliest' or 'pending'.
+    method: eth_getTransactionCount
+    args: ["address", "block_number"]
+    result: "&to_int(_)"

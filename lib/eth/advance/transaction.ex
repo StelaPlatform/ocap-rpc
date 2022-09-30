@@ -56,7 +56,7 @@ defmodule OcapRpc.Internal.EthTransaction do
 
   defp get_nonce_by_address(address, opts) do
     case Keyword.get(opts, :nonce, nil) do
-      nil -> Account.get_next_nonce(address)
+      nil -> Transaction.get_transaction_count(address, :latest)
       nonce -> nonce
     end
   end

@@ -4,6 +4,7 @@ defmodule OcapRpc.Internal.IpfsRpc do
   """
   use Tesla
   require Logger
+  alias OcapRpc.Internal.Utils
 
   @version "v0"
 
@@ -13,8 +14,7 @@ defmodule OcapRpc.Internal.IpfsRpc do
   end
 
   def call(method, verb, args) do
-    %{hostname: hostname, port: port} =
-      :ocap_rpc |> Application.get_env(:ipfs) |> Keyword.get(:conn)
+    %{hostname: hostname, port: port} = Utils.get_connection(:ipfs)
 
     url = "http://#{hostname}:#{to_string(port)}/api/#{@version}/#{method}"
 
@@ -39,9 +39,7 @@ defmodule OcapRpc.Internal.IpfsRpc do
 
       {:error, reason} ->
         raise(
-          "RPC call failed. Reason: #{inspect(reason)}, method: #{inspect(method)}, arguments: #{
-            inspect(args)
-          }"
+          "RPC call failed. Reason: #{inspect(reason)}, method: #{inspect(method)}, arguments: #{inspect(args)}"
         )
 
       e ->

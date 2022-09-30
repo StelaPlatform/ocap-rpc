@@ -6,17 +6,17 @@ defmodule OcapRpc.Internal.BtcRpc do
   use Tesla
 
   alias OcapRpc.Converter
+  alias OcapRpc.Internal.Utils
 
   plug(Tesla.Middleware.Retry, delay: 500, max_retries: 3)
-  @timeout :ocap_rpc |> Application.get_env(:btc) |> Keyword.get(:timeout)
+  @timeout Utils.get_timeout(:btc)
 
   if Application.get_env(:ocap_rpc, :env) not in [:test] do
-    plug(Tesla.Middleware.Timeout, timeout: @timeout)
+    plug(Tesla.Middleware.Timeout, timeout: Application.get_env(:ocap_rpc, :timeout, 240_000))
   end
 
   def call(method, args) do
-    config = :ocap_rpc |> Application.get_env(:btc) |> Keyword.get(:conn)
-    %{hostname: hostname, port: port, user: user, password: password} = config
+    %{hostname: hostname, port: port, user: user, password: password} = Utils.get_connection(:btc)
 
     body = get_body(method, args)
     headers = [{"Authorization", "Basic " <> Base.encode64(user <> ":" <> password)}]

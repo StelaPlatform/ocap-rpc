@@ -38,7 +38,7 @@ defmodule OcapRpc.MixProject do
     [
       # convert
       {:atomic_map, "~> 0.9"},
-      {:decimal, "~> 1.6"},
+      {:decimal, "~> 2.0"},
       {:hexate, ">= 0.6.0"},
       {:proper_case, "~> 1.3"},
       {:recase, "~> 0.6"},
@@ -53,10 +53,6 @@ defmodule OcapRpc.MixProject do
       # {:abi, path: "/Users/peiling/Documents/GitHub/ArcBlock/abi"},
       {:exth_crypto, "~> 0.1"},
       {:ex_rlp, "~> 0.5.1"},
-
-      # logger and sentry
-      {:logger_sentry, "~> 0.2"},
-      {:sentry, "~> 7.0"},
 
       # utility belt
       {:utility_belt, "~> 0.16"},

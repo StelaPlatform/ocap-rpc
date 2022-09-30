@@ -1,3 +1,7 @@
+## 1.0.0 (Sep 30, 2022)
+  - Adapt to Elixir 1.14 OTP 25.1
+  - Adapt to Erigon
+
 ## 0.15.2 (December 30, 2019)
   - Make sure the RPC return nil if the tx is not persisted on chain.
 

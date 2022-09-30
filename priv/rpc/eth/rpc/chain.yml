@@ -28,7 +28,7 @@ public:
   - name: call
     desc: Executes a new message call immediately without creating a transaction on the block chain.
     method: "eth_call"
-    args: ["obj"]
+    args: ["obj", "block_number"]
   - name: get_logs
     desc: Returns an array of all logs matching a given filter object.
     method: "eth_getLogs"

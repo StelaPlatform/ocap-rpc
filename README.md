@@ -23,7 +23,8 @@ config :ocap_rpc, :eth,
     hostname: "localhost",
     port: 8545
   },
-  timeout: 5_000
+  timeout: 5_000,
+  chain_id: 1
 
 config :ocap_rpc, :btc,
   conn: %{
@@ -45,6 +46,12 @@ config :ocap_rpc, :cmt,
     port: 8545
   },
   timeout: 5_000
+```
+
+If you just want to use one of these chain, you can do something like:
+
+```elixir
+config :ocap_rpc, :eth, chain_id: 31337
 ```
 
 ## Environment Variable Dependencies

@@ -74,7 +74,7 @@ defmodule OcapRpc.Internal.EthTransaction.Helper do
     # when computing the hash of a transaction for purposes of signing or recovering,
     # instead of hashing only the first six elements (ie. nonce, gasprice, startgas, to, value, data),
     # hash nine elements, with v replaced by CHAIN_ID, r = 0 and s = 0
-    chain_id = @chain_ids[:ethereum_mainnet]
+    chain_id = Utils.get_chain_id()
 
     nonce
     |> new_transaction(gas_price, gas_limit, to, value, input, chain_id, 0, 0)
@@ -169,7 +169,7 @@ defmodule OcapRpc.Internal.EthTransaction.Helper do
     "0x" <> Base.encode16(address, case: :lower)
   end
 
-  defp get_recovery_id(v) when v in [0, 1], do: @chain_ids[:ethereum_mainnet] * 2 + 35 + v
+  defp get_recovery_id(v) when v in [0, 1], do: Utils.get_chain_id() * 2 + 35 + v
 
   defp to_bytes(0), do: ""
   defp to_bytes(""), do: ""

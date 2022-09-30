@@ -38,4 +38,22 @@ defmodule OcapRpc.Internal.Utils do
 
   def hex_to_binary("0x" <> hex), do: hex_to_binary(hex)
   def hex_to_binary(hex), do: Base.decode16!(hex, case: :mixed)
+
+  def get_chain_id() do
+    :ocap_rpc
+    |> Application.get_env(:eth, [])
+    |> Keyword.get(:chain_id, 1)
+  end
+
+  def get_timeout(chain) when chain in [:btc, :eth, :cmt, :ipfs] do
+    :ocap_rpc
+    |> Application.get_env(chain, [])
+    |> Keyword.get(:timeout, 5000)
+  end
+
+  def get_connection(chain) when chain in [:btc, :eth, :cmt, :ipfs] do
+    :ocap_rpc
+    |> Application.get_env(chain)
+    |> Keyword.get(:conn)
+  end
 end

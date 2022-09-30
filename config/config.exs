@@ -14,7 +14,8 @@ config :ocap_rpc, :eth,
     hostname: "localhost",
     port: 8545
   },
-  timeout: 5_000
+  timeout: 5_000,
+  chain_id: 1
 
 config :ocap_rpc, :btc,
   conn: %{
