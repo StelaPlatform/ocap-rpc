@@ -39,13 +39,6 @@ config :ocap_rpc, :ipfs,
     port: 5001
   },
   timeout: 5_000
-
-config :ocap_rpc, :cmt,
-  conn: %{
-    hostname: "localhost",
-    port: 8545
-  },
-  timeout: 5_000
 ```
 
 If you just want to use one of these chain, you can do something like:
@@ -62,7 +55,6 @@ To let ocap_rpc work correctly, please make sure you have following environment 
   - BTC_RPC_USER
   - BTC_RPC_PASS
   - ETH_RPC_HOST
-  - CMT_RPC_HOST
 
 Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
 and published on [HexDocs](https://hexdocs.pm). Once published, the docs can

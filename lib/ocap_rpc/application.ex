@@ -17,7 +17,6 @@ defmodule OcapRpc.Application do
     update_conn(app, :btc)
     update_conn(app, :eth)
     update_conn(app, :ipfs)
-    update_conn(app, :cmt)
   end
 
   defp update_conn(app, :btc = type) do
@@ -54,18 +53,6 @@ defmodule OcapRpc.Application do
       |> Access.get(:conn)
       |> Access.get(:conn, %{ort: 5001})
       |> Map.put(:hostname, System.get_env("IPFS_RPC_HOST") || "localhost")
-
-    Application.put_env(app, type, Keyword.put(conf, :conn, conn))
-  end
-
-  defp update_conn(app, :cmt = type) do
-    conf = Application.get_env(app, type, [])
-
-    conn =
-      conf
-      |> Access.get(:conn)
-      |> Access.get(:conn, %{port: 8545})
-      |> Map.put(:hostname, System.get_env("CMT_RPC_HOST") || "localhost")
 
     Application.put_env(app, type, Keyword.put(conf, :conn, conn))
   end

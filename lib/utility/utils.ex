@@ -45,13 +45,13 @@ defmodule OcapRpc.Internal.Utils do
     |> Keyword.get(:chain_id, 1)
   end
 
-  def get_timeout(chain) when chain in [:btc, :eth, :cmt, :ipfs] do
+  def get_timeout(chain) when chain in [:btc, :eth, :ipfs] do
     :ocap_rpc
     |> Application.get_env(chain, [])
     |> Keyword.get(:timeout, 5000)
   end
 
-  def get_connection(chain) when chain in [:btc, :eth, :cmt, :ipfs] do
+  def get_connection(chain) when chain in [:btc, :eth, :ipfs] do
     :ocap_rpc
     |> Application.get_env(chain)
     |> Keyword.get(:conn)

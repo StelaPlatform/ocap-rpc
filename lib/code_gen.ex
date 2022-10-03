@@ -5,7 +5,7 @@ defmodule OcapRpc.Internal do
   alias OcapRpc.Internal.{CodeGen, Parser}
   path = Path.join(File.cwd!(), "priv/gen")
 
-  [:btc, :eth, :ipfs, :cmt]
+  [:btc, :eth, :ipfs]
   |> Enum.flat_map(fn type ->
     data = Parser.read_main(type)
 

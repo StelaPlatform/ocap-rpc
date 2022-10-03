@@ -1,4 +1,4 @@
-use Mix.Config
+import Config
 
 # log related
 config :logger,
@@ -31,14 +31,7 @@ config :ocap_rpc, :ipfs,
   },
   timeout: 5_000
 
-config :ocap_rpc, :cmt,
-  conn: %{
-    hostname: "localhost",
-    port: 8545
-  },
-  timeout: 5_000
-
 config :ocap_rpc,
-  env: Mix.env()
+  env: config_env()
 
-import_config "#{Mix.env()}.exs"
+import_config "#{config_env()}.exs"
