@@ -7,25 +7,6 @@ defmodule OcapRpc.Internal.EthTransaction.Helper do
   alias ExthCrypto.Signature
   alias OcapRpc.Internal.Utils
 
-  @chain_ids %{
-    ethereum_mainnet: 1,
-    morden: 2,
-    expanse_mainnet: 2,
-    ropsten: 3,
-    rinkeby: 4,
-    ubiq_mainnet: 8,
-    ubiq_testnet: 9,
-    rootstock_mainnet: 30,
-    rootstock_testnet: 31,
-    kovan: 42,
-    ethereum_classic_mainnet: 61,
-    ethereum_classic_testnet: 62,
-    ewasm_testnet: 66,
-    geth_private_chains: 1337,
-    görli: 6284,
-    stureby: 314_158
-  }
-
   @doc """
   Generates the signature of the `transaction_digest` by using the `private_key`. The transaction digest
   is the kecacak256 hash of the RLP encoded list of nine elements:

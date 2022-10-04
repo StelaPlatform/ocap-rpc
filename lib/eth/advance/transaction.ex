@@ -2,7 +2,6 @@ defmodule OcapRpc.Internal.EthTransaction do
   @moduledoc """
   Contains methods to construct and sign Ethereum transactions.
   """
-  alias OcapRpc.Eth.Account
   alias OcapRpc.Eth.Chain
   alias OcapRpc.Eth.Transaction
   alias OcapRpc.Internal.EthTransaction.Helper

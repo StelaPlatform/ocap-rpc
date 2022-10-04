@@ -49,12 +49,38 @@ config :ocap_rpc, :eth, chain_id: 31337
 
 ## Environment Variable Dependencies
 
-To let ocap_rpc work correctly, please make sure you have following environment variables set in runtime environment.
+Following environment variables are used to control ocap-rpc at run time.
 
-  - BTC_RPC_HOST
-  - BTC_RPC_USER
-  - BTC_RPC_PASS
-  - ETH_RPC_HOST
+- `BTC_RPC_HOST`: `localhost` by default
+- `BTC_RPC_PORT`: `8332` by default
+- `BTC_PRC_USER`: empty by default
+- `BTC_RPC_PASSWORD`: empty by default
+- `ETH_RPC_HOST`: `localhost` by default
+- `ETH_RPC_PORT`: `8545` by default
+- `IPFS_RPC_HOST`: `localhost` by default
+- `IPFS_RPC_PORT`: `5001` by dy default
+
+## Appendix
+
+Ethereum Chain ID:
+```
+    ethereum_mainnet: 1,
+    morden: 2,
+    expanse_mainnet: 2,
+    ropsten: 3,
+    rinkeby: 4,
+    ubiq_mainnet: 8,
+    ubiq_testnet: 9,
+    rootstock_mainnet: 30,
+    rootstock_testnet: 31,
+    kovan: 42,
+    ethereum_classic_mainnet: 61,
+    ethereum_classic_testnet: 62,
+    ewasm_testnet: 66,
+    geth_private_chains: 1337,
+    görli: 6284,
+    stureby: 314158
+```
 
 Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
 and published on [HexDocs](https://hexdocs.pm). Once published, the docs can

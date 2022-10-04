@@ -7,10 +7,11 @@ defmodule OcapRpc.Internal.IpfsRpc do
   alias OcapRpc.Internal.Utils
 
   @version "v0"
+  @timeout Application.compile_env(:ocap_rpc, [:ipfs, :timeout], 240_000)
 
   # TODO(lei): when tesla not compatible issue solved: `https://github.com/teamon/tesla/issues/157`
-  if Application.get_env(:ocap_rpc, :env) not in [:test] do
-    plug(Tesla.Middleware.Timeout, timeout: Application.get_env(:ocap_rpc, :timeout, 240_000))
+  if Utils.env() not in [:test] do
+    plug(Tesla.Middleware.Timeout, timeout: @timeout)
   end
 
   def call(method, verb, args) do

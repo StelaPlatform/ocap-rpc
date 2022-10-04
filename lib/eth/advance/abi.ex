@@ -53,6 +53,9 @@ defmodule OcapRpc.Internal.EthABI do
     end
   end
 
+  @doc """
+  Decode the transaction input based on the given `signatures`. Returns the signature and the arguments list.
+  """
   def decode_input({nil, _input_data}, _), do: nil
   def decode_input({[], _input_data}, _), do: nil
 
@@ -67,9 +70,6 @@ defmodule OcapRpc.Internal.EthABI do
 
   def decode_input({signature, ""}, _), do: {:ok, signature, []}
 
-  @doc """
-  Decode the transaction input based on the given `signatures`.
-  """
   @spec decode_input({list[String.t()], binary}, boolean) :: list[invalid_sig()] | valid_sig()
   def decode_input({signatures, input_data}, succeeded?) when is_list(signatures) do
     all_results = Enum.map(signatures, &decode_input({&1, input_data}, succeeded?))
@@ -88,9 +88,6 @@ defmodule OcapRpc.Internal.EthABI do
     end
   end
 
-  @doc """
-  Decode transaction input data. Returns the signature and the arguments list.
-  """
   @spec decode_input({String.t(), binary}, boolean) :: valid_sig() | invalid_sig()
   def decode_input({signature, input_data}, succeeded?) do
     [_, fn_name, param_types] = Regex.run(@sig_reg, signature)

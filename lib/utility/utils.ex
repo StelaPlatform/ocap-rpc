@@ -3,6 +3,10 @@ defmodule OcapRpc.Internal.Utils do
   Utility functions
   """
 
+  @env Application.compile_env(:ocap_rpc, :env)
+
+  def env, do: @env
+
   def sha3(data) do
     data |> :keccakf1600.sha3_256() |> Base.encode16() |> String.downcase()
   end
@@ -42,13 +46,7 @@ defmodule OcapRpc.Internal.Utils do
   def get_chain_id() do
     :ocap_rpc
     |> Application.get_env(:eth, [])
-    |> Keyword.get(:chain_id, 1)
-  end
-
-  def get_timeout(chain) when chain in [:btc, :eth, :ipfs] do
-    :ocap_rpc
-    |> Application.get_env(chain, [])
-    |> Keyword.get(:timeout, 5000)
+    |> Keyword.get(:chain_id)
   end
 
   def get_connection(chain) when chain in [:btc, :eth, :ipfs] do

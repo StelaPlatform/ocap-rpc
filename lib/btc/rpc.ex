@@ -8,11 +8,12 @@ defmodule OcapRpc.Internal.BtcRpc do
   alias OcapRpc.Converter
   alias OcapRpc.Internal.Utils
 
-  plug(Tesla.Middleware.Retry, delay: 500, max_retries: 3)
-  @timeout Utils.get_timeout(:btc)
+  @timeout Application.compile_env(:ocap_rpc, [:btc, :timeout], 240_000)
 
-  if Application.get_env(:ocap_rpc, :env) not in [:test] do
-    plug(Tesla.Middleware.Timeout, timeout: Application.get_env(:ocap_rpc, :timeout, 240_000))
+  plug(Tesla.Middleware.Retry, delay: 500, max_retries: 3)
+
+  if Utils.env() not in [:test] do
+    plug(Tesla.Middleware.Timeout, timeout: @timeout)
   end
 
   def call(method, args) do
