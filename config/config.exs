@@ -6,7 +6,7 @@ config :logger,
   utc_log: false
 
 config :logger, :console,
-  format: "$date $time [$level] $levelpad$message\n",
+  format: "$date $time [$level] $message\n",
   colors: [info: :green]
 
 config :ocap_rpc, :eth,
