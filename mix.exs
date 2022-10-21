@@ -49,9 +49,8 @@ defmodule OcapRpc.MixProject do
       {:jason, "~> 1.1"},
 
       # Ethereum related deps
-      {:abi, git: "https://github.com/arcblock/abi.git"},
-      # {:abi, path: "/Users/peiling/Documents/GitHub/ArcBlock/abi"},
-      {:exth_crypto, "~> 0.1"},
+      {:abi, git: "https://github.com/StelaPlatform/abi.git"},
+      {:exth_crypto, git: "https://github.com/StelaPlatform/exth_crypto.git"},
       {:ex_rlp, "~> 0.5.1"},
 
       # utility belt
