@@ -49,7 +49,7 @@ defmodule OcapRpc.MixProject do
       {:jason, "~> 1.1"},
 
       # Ethereum related deps
-      {:abi, git: "https://github.com/StelaPlatform/abi.git"},
+      {:ex_abi, "~> 0.5"},
       {:exth_crypto, git: "https://github.com/StelaPlatform/exth_crypto.git"},
       {:ex_rlp, "~> 0.5.1"},
 
