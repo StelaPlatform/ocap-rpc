@@ -14,16 +14,19 @@ defmodule OcapRpc.Internal.IpfsRpc do
     plug(Tesla.Middleware.Timeout, timeout: @timeout)
   end
 
-  def call(method, verb, args) do
+  def call(method, _verb, args) do
     %{hostname: hostname, port: port} = Utils.get_connection(:ipfs)
 
-    url = "http://#{hostname}:#{to_string(port)}/api/#{@version}/#{method}"
+    path = "http://#{hostname}:#{to_string(port)}/api/#{@version}/#{method}"
+    query = build_query(args)
+    url = "#{path}?#{query}"
 
     Logger.debug(fn ->
-      "IPFS RPC request to #{verb} for: #{inspect(url)}. args: #{inspect(args)}"
+      "IPFS RPC request to POST for: #{inspect(url)}."
     end)
 
-    result = apply(Tesla, verb, [url, [query: args]])
+    # All IPFS RPC requests are POST
+    result = post(url, "")
 
     case result do
       {:ok, %{status: 200, body: body, headers: headers}} ->
@@ -53,5 +56,11 @@ defmodule OcapRpc.Internal.IpfsRpc do
     Enum.reduce_while(headers, nil, fn {k, v}, _acc ->
       if k === name, do: {:halt, v}, else: {:cont, nil}
     end)
+  end
+
+  defp build_query(args) do
+    args
+    |> Enum.map(fn {k, v} -> "#{k}=#{v}" end)
+    |> Enum.join("&")
   end
 end

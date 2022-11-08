@@ -11,5 +11,7 @@ rpc:
   - rpc/file.yml
   - rpc/key.yml
   - rpc/name.yml
+  - rpc/object.yml
+  - rpc/pin.yml
   - rpc/repo.yml
   - rpc/utils.yml
