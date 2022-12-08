@@ -1,1 +1,5 @@
 ---
+- ResponseAdd:
+    - cid: "&strip(hash)"
+    - size: "&to_int(_)"
+    - name: "&strip(_)"

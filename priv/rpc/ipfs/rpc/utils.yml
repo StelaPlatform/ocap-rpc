@@ -2,18 +2,83 @@
 name: Utils
 desc: IPFS utility API
 public:
+  - name: add
+    desc: Add a file or directory to IPFS.
+    method: add
+    result: ResponseAdd
+    args: 
+      - name: content
+        desc: The content to add to IPFS
+        multipart: true
+      - name: quiet
+        desc: "Bool. Write minimal output. Required: no."
+        required: false
+      - name: quieter
+        desc: "Bool. Write only final hash. Required: no."
+        required: false
+      - name: silent
+        desc: "Bool. Write no output. Required: no."
+        required: false
+      - name: progress
+        desc: "Bool. Stream progress data. Required: no."
+        required: false
+      - name: trickle
+        desc: "Bool. Use trickle-dag format for dag generation. Required: no."
+        required: false
+      - name: only_hash
+        desc: "Bool. Only chunk and hash - do not write to disk. Required: no."
+        required: false
+      - name: wrap_with_directory
+        desc: "Bool. Wrap files with a directory object. Required: no."
+        required: false
+      - name: chunker
+        desc: "String. Chunking algorithm, size-\[bytes\], rabin-\[min\]-\[avg\]-\[max\] or buzhash. Default: `size-262144`. Required: no."
+        required: false
+      - name: raw_leaves
+        desc: "Bool. Use raw blocks for leaf nodes. Required: no."
+        required: false
+      - name: nocopy
+        desc: "Bool. Add the file using filestore. Implies raw-leaves. (experimental). Required: no."
+        required: false
+      - name: fscache
+        desc: "Bool. Check the filestore for pre-existing blocks. (experimental). Required: no."
+        required: false
+      - name: cid_version
+        desc: "Int. CID version. Defaults to 0 unless an option that depends on CIDv1 is passed. Passing version 1 will cause the raw-leaves option to default to true. Required: no."
+        required: false
+      - name: hash
+        desc: "String. Hash function to use. Implies CIDv1 if not sha2-256. (experimental). Default: `sha2-256`. Required: no."
+        required: false
+      - name: inline
+        desc: "Bool. Inline small blocks into CIDs. (experimental). Required: no."
+        required: false
+      - name: inline_limit
+        desc: "Int. Maximum block size to inline. (experimental). Default: `32`. Required: no."
+        required: false
+      - name: pin
+        desc: "Bool. Pin locally to protect added files from garbage collection. Default: `true`. Required: no."
+        required: false
+      - name: to_files
+        desc: "String. Add reference to Files API (MFS) at the provided path. Required: no."
+        required: false
+
   - name: cat
     desc: Show IPFS object data.
     method: cat
-    args: ["arg"]
-  - name: cat
-    desc: Show IPFS object data.
-    method: cat
-    args: ["arg", "offset"]
-  - name: cat
-    desc: Show IPFS object data.
-    method: cat
-    args: ["arg", "offset", "length"]
+    args:
+      - name: arg
+        desc: "[string] The path to the IPFS object(s) to be outputted. Required: **yes**."
+        required: true
+      - name: offset
+        desc: "[int64] Byte offset to begin reading from. Required: no."
+        required: false
+      - name: length
+        desc: "[int64] Maximum number of bytes to read. Required: no."
+        required: false
+      - name: progress
+        desc: "[bool] Stream progress data. Default: `true`. Required: no."
+        required: false
+
   - name: commands
     desc: List all available commands.
     method: commands

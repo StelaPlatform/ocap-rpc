@@ -5,6 +5,7 @@ defmodule OcapRpc.Internal.IpfsRpc do
   use Tesla
   require Logger
   alias OcapRpc.Internal.Utils
+  alias Tesla.Multipart
 
   @version "v0"
   @timeout Application.compile_env(:ocap_rpc, [:ipfs, :timeout], 240_000)
@@ -14,19 +15,40 @@ defmodule OcapRpc.Internal.IpfsRpc do
     plug(Tesla.Middleware.Timeout, timeout: @timeout)
   end
 
-  def call(method, _verb, args) do
+  def call(method, _verb, args, opts \\ []) do
     %{hostname: hostname, port: port} = Utils.get_connection(:ipfs)
 
     path = "http://#{hostname}:#{to_string(port)}/api/#{@version}/#{method}"
-    query = build_query(args)
+
+    {multipart, opts} = Keyword.pop(opts, :multipart)
+
+    {args, mp} =
+      case multipart do
+        nil ->
+          {args, ""}
+
+        _ ->
+          {multipart_args, args} = Enum.split_with(args, fn {k, _v} -> k in multipart end)
+
+          mp =
+            multipart_args
+            |> Enum.reduce(
+              Multipart.new(),
+              fn {k, v}, acc ->
+                Multipart.add_file_content(acc, v, "#{k}")
+              end
+            )
+
+          {args, mp}
+      end
+
+    query = build_query(args, opts)
     url = "#{path}?#{query}"
 
-    Logger.debug(fn ->
-      "IPFS RPC request to POST for: #{inspect(url)}."
-    end)
+    Logger.debug(fn -> "IPFS RPC request to POST for: #{inspect(url)}." end)
 
     # All IPFS RPC requests are POST
-    result = post(url, "")
+    result = post(url, mp)
 
     case result do
       {:ok, %{status: 200, body: body, headers: headers}} ->
@@ -58,9 +80,18 @@ defmodule OcapRpc.Internal.IpfsRpc do
     end)
   end
 
-  defp build_query(args) do
-    args
-    |> Enum.map(fn {k, v} -> "#{k}=#{v}" end)
-    |> Enum.join("&")
+  defp build_query(args, opts) do
+    l1 =
+      args
+      |> Stream.filter(fn {_, v} -> v != nil && v != "" end)
+      |> Enum.map(fn {k, v} -> "#{to_dash_arg(k)}=#{v}" end)
+
+    l2 = Enum.map(opts, fn {k, v} -> "#{to_dash_arg(k)}=#{v}" end)
+
+    Enum.join(l1 ++ l2, "&")
+  end
+
+  defp to_dash_arg(k) do
+    k |> Atom.to_string() |> String.replace("_", "-")
   end
 end

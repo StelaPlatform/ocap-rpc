@@ -29,7 +29,6 @@ defmodule OcapRpc.Internal.CodeGen do
         doc = Map.get(public, "desc", "Need public interface doc")
         rpc_result = Map.get(public, "result", nil)
         result = merge_result(rpc_result, result)
-        args = Enum.map(args, &String.to_atom/1)
 
         type =
           case result != rpc_result do

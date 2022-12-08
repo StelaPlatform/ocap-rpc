@@ -13,13 +13,30 @@ defmodule OcapRpc.Internal.IpfsCodeGen do
 
   defp quote_rpc_call(name, args, method, result, opts) do
     doc = Access.get(opts, :doc)
+    {required_args, multipart_args, optional_args} = Parser.split_args(args)
+    doc = Parser.build_doc(doc, required_args ++ multipart_args, optional_args)
     mod_type = get_type(opts)
     verb = Access.get(opts, :verb)
     mapping = Access.get(opts, :args_mapping)
 
+    mp =
+      case multipart_args do
+        [] ->
+          []
+
+        _ ->
+          [
+            {:multipart,
+             Enum.map(multipart_args, fn %{"name" => name} -> String.to_atom(name) end)}
+          ]
+      end
+
     quote do
       @doc unquote(doc)
-      def unquote(String.to_atom(name))(unquote_splicing(Parser.gen_args(args))) do
+      def unquote(String.to_atom(name))(
+            unquote_splicing(Parser.gen_args(required_args ++ multipart_args)),
+            opts \\ []
+          ) do
         # need a way to know if the arg is a file and do multi part upload here
 
         data =
@@ -33,8 +50,10 @@ defmodule OcapRpc.Internal.IpfsCodeGen do
               |> Enum.map(fn {k, {_, v}} -> {k, v} end)
           end
 
+        opts = opts ++ unquote(mp)
+
         unquote(method)
-        |> IpfsRpc.call(unquote(verb), data)
+        |> IpfsRpc.call(unquote(verb), data, opts)
         |> Extractor.process(unquote(Macro.escape(result)), unquote(mod_type))
       end
     end
@@ -48,7 +67,8 @@ defmodule OcapRpc.Internal.IpfsCodeGen do
         nil
 
       _ ->
-        mod_name = DynamicModule.gen_module_name(:ocap_rpc, "Eth", "Type", Recase.to_pascal(type))
+        mod_name =
+          DynamicModule.gen_module_name(:ocap_rpc, "Ipfs", "Type", Recase.to_pascal(type))
 
         String.to_atom("Elixir.#{mod_name}")
     end

@@ -24,11 +24,31 @@ defmodule OcapRpc.Internal.Parser do
   end
 
   def gen_args(args) do
-    Enum.map(args, fn name -> Macro.var(name, nil) end)
+    Enum.map(args, &gen_arg/1)
+  end
+
+  def build_doc(method_doc, required_args, optional_args) do
+    args_doc = Enum.map_join(required_args, &build_arg_doc/1)
+    options_doc = Enum.map_join(optional_args, &build_arg_doc/1)
+
+    method_doc
+    |> do_build_doc(args_doc, "## Parameters")
+    |> do_build_doc(options_doc, "## Options")
+  end
+
+  def split_args(args) do
+    required_args = Enum.filter(args, &get_required_arg/1)
+    multipart_args = Enum.filter(args, &get_multipart_arg/1)
+    optional_args = Enum.filter(args, &get_optional_arg/1)
+    {required_args, multipart_args, optional_args}
+  end
+
+  def split_optional_args(args) do
+    IO.inspect(args)
+    Enum.split_with(args, &get_optional_arg/1)
   end
 
   # private functions
-
   defp read_files(dir, filenames) do
     filenames
     |> Enum.map(&read_one_file(dir, &1))
@@ -78,4 +98,36 @@ defmodule OcapRpc.Internal.Parser do
 
   defp get_kv(map), do: {get_one(map, :keys), get_one(map, :values)}
   defp get_one(map, type), do: List.first(apply(Map, type, [map]))
+
+  defp gen_arg(%{"name" => name}), do: name |> String.to_atom() |> Macro.var(nil)
+  defp gen_arg(arg), do: arg |> String.to_atom() |> Macro.var(nil)
+
+  defp build_arg_doc(%{"name" => name, "desc" => desc}), do: "  - #{name}: #{desc}.\n"
+  defp build_arg_doc(_), do: ""
+
+  defp do_build_doc(existing, adding, title) do
+    case adding do
+      "" ->
+        existing
+
+      _ ->
+        """
+        #{existing}
+
+        #{title}
+
+        #{adding}
+        """
+    end
+  end
+
+  defp get_required_arg(%{"multipart" => true}), do: false
+  defp get_required_arg(%{"required" => false}), do: false
+  defp get_required_arg(_), do: true
+
+  defp get_multipart_arg(%{"multipart" => true}), do: true
+  defp get_multipart_arg(_), do: false
+
+  defp get_optional_arg(%{"required" => false}), do: true
+  defp get_optional_arg(_), do: false
 end
