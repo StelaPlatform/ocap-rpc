@@ -55,8 +55,14 @@ defmodule OcapRpc.Internal.IpfsRpc do
         content_type = get_header(headers, "content-type")
 
         case content_type do
-          "application/json" -> Jason.decode!(body)
-          _ -> body
+          "application/json" ->
+            Jason.decode!(body)
+
+          _ ->
+            case Jason.decode(body) do
+              {:ok, jason_body} -> jason_body
+              {:error, _} -> body
+            end
         end
 
       {:ok, %{status: status, body: body}} ->

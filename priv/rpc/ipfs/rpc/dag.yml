@@ -10,3 +10,14 @@ public:
     desc: Resolve ipid block.
     method: dag/resolve
     args: ["arg"]
+  - name: get
+    desc: Get a DAG node from IPFS.
+    method: dag/get
+    result: response_dag_get
+    args:
+      - name: arg
+        desc: "[string] The object to get Required: **yes**."
+        required: true
+      - name: output_codec
+        desc: "[string] Format that the object will be encoded as. Default: `dag-json`. Required: no."
+        required: false

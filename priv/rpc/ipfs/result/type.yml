@@ -1,5 +1,16 @@
 ---
-- ResponseAdd:
+- response_add:
     - cid: "&strip(hash)"
     - size: "&to_int(_)"
     - name: "&strip(_)"
+
+# - response_get:
+
+- link:
+    - hash: "&strip(hash./)"
+    - name: "&strip(_)"
+    - tsize: "&to_int(_)"
+
+- response_dag_get:
+    - data: "&strip(data./.bytes)"
+    - links: @link

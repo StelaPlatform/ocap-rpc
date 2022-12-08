@@ -90,7 +90,7 @@ defmodule OcapRpc.Internal.Extractor do
 
   defp call_function(fn_info, data, key) do
     [fn_name | args] =
-      ~r/[a-zA-Z_*\.]+/
+      ~r/[a-zA-Z_*\.\/]+/
       |> Regex.scan(fn_info)
       |> List.flatten()
 

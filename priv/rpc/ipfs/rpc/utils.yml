@@ -5,7 +5,7 @@ public:
   - name: add
     desc: Add a file or directory to IPFS.
     method: add
-    result: ResponseAdd
+    result: response_add
     args: 
       - name: content
         desc: The content to add to IPFS
@@ -90,7 +90,26 @@ public:
   - name: get
     desc: Download ipfs objects
     method: get
-    args: ["arg"]
+    # result: response_get
+    args:
+      - name: arg 
+        desc: "[string] The path to the IPFS object(s) to be outputted. Required: **yes**."
+        required: true
+      - name: output 
+        desc: "[string] The path where the output should be stored. Required: no."
+        required: false
+      - name: archive 
+        desc: "[bool] Output a TAR archive. Required: no."
+        required: false
+      - name: compress 
+        desc: "[bool] Compress the output with GZIP compression. Required: no."
+        required: false
+      - name: compression_level 
+        desc: "[int] The level of compression (1-9). Required: no."
+        required: false
+      - name: progress 
+        desc: "[bool] Stream progress data. Default: `true`. Required: no."
+        required: false
   - name: id
     desc: Show ipfs node id info.
     method: get
