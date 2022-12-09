@@ -16,7 +16,7 @@ defmodule OcapRpc.Internal.Erc20 do
 
   def get_transfer_to_sign(contract, from, to, value, opts \\ []) do
     contract_addr = Map.get(@contract_addrs, contract, contract)
-    receiver = Utils.hex_to_binary(to)
+    receiver = ChainUtil.hex_to_binary(to)
 
     input =
       "transfer(address,uint256)"
@@ -34,7 +34,7 @@ defmodule OcapRpc.Internal.Erc20 do
 
   def compose_transfer(contract, private_key, to, value, opts \\ []) do
     contract_addr = Map.get(@contract_addrs, contract, contract)
-    receiver = Utils.hex_to_binary(to)
+    receiver = ChainUtil.hex_to_binary(to)
 
     input =
       "transfer(address,uint256)"

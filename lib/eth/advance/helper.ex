@@ -18,7 +18,7 @@ defmodule OcapRpc.Internal.EthTransaction.Helper do
   def get_signature(transaction_digest, private_key) do
     Signature.sign_digest(
       transaction_digest,
-      Utils.hex_to_binary(private_key)
+      ChainUtil.hex_to_binary(private_key)
     )
   end
 
@@ -117,9 +117,9 @@ defmodule OcapRpc.Internal.EthTransaction.Helper do
       to_bytes(nonce),
       to_bytes(gas_price),
       to_bytes(gas_limit),
-      Utils.hex_to_binary(to),
+      ChainUtil.hex_to_binary(to),
       to_bytes(value),
-      Utils.hex_to_binary(input),
+      ChainUtil.hex_to_binary(input),
       to_bytes(v),
       to_bytes(r),
       to_bytes(s)
@@ -132,7 +132,7 @@ defmodule OcapRpc.Internal.EthTransaction.Helper do
   @spec get_transaction_hash(String.t()) :: String.t()
   def get_transaction_hash(raw_transaction) do
     raw_transaction
-    |> Utils.hex_to_binary()
+    |> ChainUtil.hex_to_binary()
     |> Keccak.kec()
     |> Base.encode16()
   end
@@ -143,7 +143,7 @@ defmodule OcapRpc.Internal.EthTransaction.Helper do
   @spec get_address_from_private_key(String.t()) :: String.t()
   def get_address_from_private_key(private_key) do
     {:ok, <<0x04, public_key::binary>>} =
-      private_key |> Utils.hex_to_binary() |> Signature.get_public_key()
+      private_key |> ChainUtil.hex_to_binary() |> Signature.get_public_key()
 
     <<_::binary-size(12), address::binary-size(20)>> = Keccak.kec(public_key)
 

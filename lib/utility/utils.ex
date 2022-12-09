@@ -40,9 +40,6 @@ defmodule OcapRpc.Internal.Utils do
   def int_to_hex(int), do: "0x" <> (int |> Integer.to_string(16) |> padding())
   def hex_to_int("0x" <> hex), do: String.to_integer(hex, 16)
 
-  def hex_to_binary("0x" <> hex), do: hex_to_binary(hex)
-  def hex_to_binary(hex), do: Base.decode16!(hex, case: :mixed)
-
   def get_chain_id() do
     :ocap_rpc
     |> Application.get_env(:eth, [])

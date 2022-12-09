@@ -37,7 +37,7 @@ defmodule OcapRpc.Internal.EthABI do
   def parse_input(_), do: nil
 
   defp slice_input(input) do
-    bin = Utils.hex_to_binary(input)
+    bin = ChainUtil.hex_to_binary(input)
 
     if byte_size(bin) < 4 or byte_size(bin) > 3004 do
       {nil, nil}
