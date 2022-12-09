@@ -25,10 +25,7 @@ defmodule OcapRpc.Internal.IpfsCodeGen do
           []
 
         _ ->
-          [
-            {:multipart,
-             Enum.map(multipart_args, fn %{"name" => name} -> String.to_atom(name) end)}
-          ]
+          [{:multipart, Enum.map(multipart_args, &Map.get(&1, "name"))}]
       end
 
     quote do

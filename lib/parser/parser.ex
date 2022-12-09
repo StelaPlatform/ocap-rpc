@@ -23,6 +23,10 @@ defmodule OcapRpc.Internal.Parser do
     |> Map.take(["name", "doc", "rpc", "result"])
   end
 
+  def parse_args(args) do
+    Enum.map(args, &parse_arg/1)
+  end
+
   def gen_args(args) do
     Enum.map(args, &gen_arg/1)
   end
@@ -99,8 +103,11 @@ defmodule OcapRpc.Internal.Parser do
   defp get_kv(map), do: {get_one(map, :keys), get_one(map, :values)}
   defp get_one(map, type), do: List.first(apply(Map, type, [map]))
 
-  defp gen_arg(%{"name" => name}), do: name |> String.to_atom() |> Macro.var(nil)
-  defp gen_arg(arg), do: arg |> String.to_atom() |> Macro.var(nil)
+  defp parse_arg(%{"name" => name} = arg), do: %{arg | "name" => String.to_atom(name)}
+  defp parse_arg(arg), do: String.to_atom(arg)
+
+  defp gen_arg(%{"name" => name}), do: Macro.var(name, nil)
+  defp gen_arg(arg), do: Macro.var(arg, nil)
 
   defp build_arg_doc(%{"name" => name, "desc" => desc}), do: "  - #{name}: #{desc}.\n"
   defp build_arg_doc(_), do: ""

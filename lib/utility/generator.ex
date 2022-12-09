@@ -2,7 +2,7 @@ defmodule OcapRpc.Internal.CodeGen do
   @moduledoc """
   Generate RPC code based on priv/rpc/*.yml.
   """
-  alias OcapRpc.Internal.{BtcCodeGen, EthCodeGen, IpfsCodeGen}
+  alias OcapRpc.Internal.{BtcCodeGen, EthCodeGen, IpfsCodeGen, Parser}
   alias UtilityBelt.CodeGen.DynamicModule
   require DynamicModule
 
@@ -29,6 +29,7 @@ defmodule OcapRpc.Internal.CodeGen do
         doc = Map.get(public, "desc", "Need public interface doc")
         rpc_result = Map.get(public, "result", nil)
         result = merge_result(rpc_result, result)
+        args = Parser.parse_args(args)
 
         type =
           case result != rpc_result do
