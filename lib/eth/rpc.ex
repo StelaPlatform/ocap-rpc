@@ -62,24 +62,15 @@ defmodule OcapRpc.Internal.EthRpc do
   defp get_tx_trace(nil), do: nil
 
   defp get_tx_trace(resp) do
-    hash = resp["hash"]
-
     case call("eth_getTransactionReceipt", [resp["hash"]]) do
       nil ->
-        nil
+        resp
 
       receipt ->
-        block = call("eth_getBlockByHash", [resp["blockHash"], false])
-
-        traces =
-          "trace_transaction"
-          |> call([hash])
-          |> Kernel.||([])
-          |> Enum.map(fn trace -> Map.put(trace, "status", receipt["status"]) end)
+        block = call("eth_getBlockByNumber", [resp["blockNumber"], false])
 
         receipt
         |> Map.merge(resp)
-        |> Map.put("traces", traces)
         |> Map.put("timestamp", block["timestamp"])
     end
   end
