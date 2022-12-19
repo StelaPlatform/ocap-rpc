@@ -16,7 +16,7 @@ defmodule OcapRpc.Internal.IpfsRpc do
   end
 
   def call(method, _verb, args, opts \\ []) do
-    %{hostname: hostname, port: port} = Utils.get_connection(:ipfs)
+    %{hostname: hostname, port: port} = Application.get_env(:ocap_rpc, :ipfs)
 
     path = "http://#{hostname}:#{to_string(port)}/api/#{@version}/#{method}"
 

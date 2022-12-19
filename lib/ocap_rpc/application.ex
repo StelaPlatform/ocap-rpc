@@ -7,6 +7,8 @@ defmodule OcapRpc.Application do
     children = []
     opts = [strategy: :one_for_one, name: OcapRpc.Supervisor]
 
+    OcapRpc.ChainConfigs.update_config()
+
     Supervisor.start_link(children, opts)
   end
 end

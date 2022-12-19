@@ -31,26 +31,23 @@ config :ocap_rpc,
 If you want to override default values for configurations, you can copy over following configs and edit to your like, other wise OCAP_RPC will use system env described in next section.
 
 ```elixir
-config :ocap_rpc, :eth,
-  conn: %{
-    hostname: "localhost",
-    port: 8545
-  },
-  timeout: 5_000,
-  chain_id: 1
 
 config :ocap_rpc, :btc,
-  conn: %{
-    hostname: "localhost",
-    port: 8332
-  },
-  timeout: 5_000
+  hostname: "localhost",
+  port: 8332,
+  timeout: 5_000,
+  user: "",
+  password: "",
+
+config :ocap_rpc, :eth,
+  hostname: "123",
+  port: 8545,
+  timeout: 5_000,
+  chain_id: 1,
 
 config :ocap_rpc, :ipfs,
-  conn: %{
-    hostname: "localhost",
-    port: 5001
-  },
+  hostname: "localhost",
+  port: 5001,
   timeout: 5_000
 ```
 
@@ -58,6 +55,7 @@ config :ocap_rpc, :ipfs,
 
 Following environment variables are used to control ocap-rpc at run time.
 
+- `OCAP_RPC_TIMEOUT`
 - `OCAP_RPC_BTC_HOST`
 - `OCAP_RPC_BTC_PORT`
 - `OCAP_PRC_BTC_USER`

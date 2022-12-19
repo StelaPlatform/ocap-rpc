@@ -17,7 +17,8 @@ defmodule OcapRpc.Internal.BtcRpc do
   end
 
   def call(method, args) do
-    %{hostname: hostname, port: port, user: user, password: password} = Utils.get_connection(:btc)
+    %{hostname: hostname, port: port, user: user, password: password} =
+      Application.get_env(:ocap_rpc, :btc)
 
     body = get_body(method, args)
     headers = [{"Authorization", "Basic " <> Base.encode64(user <> ":" <> password)}]

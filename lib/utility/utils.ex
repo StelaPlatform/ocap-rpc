@@ -45,23 +45,4 @@ defmodule OcapRpc.Internal.Utils do
     |> Application.get_env(:eth, [])
     |> Keyword.get(:chain_id)
   end
-
-  def get_connection(chain) when chain in [:btc, :eth, :ipfs] do
-    :ocap_rpc
-    |> Application.get_env(chain)
-    |> Keyword.get(:conn)
-  end
-
-  # This method is designed for runtime.exs to use only.
-  def get_actual_env(env, chain, path) when chain in [:btc, :eth, :ipfs] do
-    sys_env = System.get_env(env)
-
-    default =
-      :ocap_rpc
-      |> Application.get_env(chain)
-      |> get_in(path)
-      |> to_string()
-
-    sys_env || default
-  end
 end

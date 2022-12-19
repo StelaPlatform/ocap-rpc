@@ -21,7 +21,7 @@ defmodule OcapRpc.Internal.EthRpc do
   end
 
   def call(method, args) do
-    %{hostname: hostname, port: port} = Utils.get_connection(:eth)
+    %{hostname: hostname, port: port} = Application.get_env(:ocap_rpc, :eth)
 
     body = get_body(method, args)
     # Logger.debug("Ethereum RPC request for: #{inspect(body)}}")
