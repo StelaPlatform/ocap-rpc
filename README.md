@@ -15,7 +15,20 @@ def deps do
 end
 ```
 
-## Configuration
+## Configurations
+
+### Required config for build time
+
+You need to set following config in your `config.exs` to build OCAP_RPC
+
+```elixir
+config :ocap_rpc,
+  env: config_env()
+```
+
+### Default Values
+
+If you want to override default values for configurations, you can copy over following configs and edit to your like, other wise OCAP_RPC will use system env described in next section.
 
 ```elixir
 config :ocap_rpc, :eth,
@@ -41,24 +54,19 @@ config :ocap_rpc, :ipfs,
   timeout: 5_000
 ```
 
-If you just want to use one of these chain, you can do something like:
-
-```elixir
-config :ocap_rpc, :eth, chain_id: 31337
-```
-
-## Environment Variable Dependencies
+### Environment Variable
 
 Following environment variables are used to control ocap-rpc at run time.
 
-- `BTC_RPC_HOST`: `localhost` by default
-- `BTC_RPC_PORT`: `8332` by default
-- `BTC_PRC_USER`: empty by default
-- `BTC_RPC_PASSWORD`: empty by default
-- `ETH_RPC_HOST`: `localhost` by default
-- `ETH_RPC_PORT`: `8545` by default
-- `IPFS_RPC_HOST`: `localhost` by default
-- `IPFS_RPC_PORT`: `5001` by dy default
+- `OCAP_RPC_BTC_HOST`
+- `OCAP_RPC_BTC_PORT`
+- `OCAP_PRC_BTC_USER`
+- `OCAP_RPC_BTC_PASSWORD`
+- `OCAP_RPC_ETH_HOST`
+- `OCAP_RPC_ETH_PORT`
+- `OCAP_RPC_ETH_CHAIN_ID`
+- `OCAP_RPC_IPFS_HOST`
+- `OCAP_RPC_IPFS_PORT`
 
 ## Appendix
 
