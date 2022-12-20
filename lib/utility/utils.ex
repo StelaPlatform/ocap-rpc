@@ -43,6 +43,6 @@ defmodule OcapRpc.Internal.Utils do
   def get_chain_id() do
     :ocap_rpc
     |> Application.get_env(:eth, [])
-    |> Keyword.get(:chain_id)
+    |> Map.get(:chain_id)
   end
 end
