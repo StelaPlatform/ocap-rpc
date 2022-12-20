@@ -11,3 +11,4 @@ rpc:
   - rpc/net.yml
   - rpc/trace.yml
   - rpc/transaction.yml
+  - rpc/log.yml

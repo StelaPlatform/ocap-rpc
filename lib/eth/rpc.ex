@@ -24,7 +24,8 @@ defmodule OcapRpc.Internal.EthRpc do
     %{hostname: hostname, port: port} = Application.get_env(:ocap_rpc, :eth)
 
     body = get_body(method, args)
-    # Logger.debug("Ethereum RPC request for: #{inspect(body)}}")
+    Logger.debug("Ethereum RPC request for: #{inspect(body)}}")
+
     result =
       post(
         "http://#{hostname}:#{to_string(port)}",
