@@ -23,13 +23,17 @@ defmodule OcapRpc.Internal.EthRpc do
   def call(method, args) do
     %{hostname: hostname, port: port} = Application.get_env(:ocap_rpc, :eth)
 
-    body = get_body(method, args)
-    Logger.debug("Ethereum RPC request for: #{inspect(body)}}")
+    request_body =
+      method
+      |> get_body(args)
+      |> Jason.encode!()
+
+    Logger.debug("Ethereum RPC request for: #{request_body}}")
 
     result =
       post(
         "http://#{hostname}:#{to_string(port)}",
-        Jason.encode!(body)
+        request_body
       )
 
     case result do
@@ -193,7 +197,7 @@ defmodule OcapRpc.Internal.EthRpc do
   defp encode_params(args) when is_map(args),
     do: Enum.reduce(args, %{}, fn {k, v}, acc -> Map.put(acc, k, encode_params(v)) end)
 
-  defp encode_params(arg) when is_integer(arg), do: Converter.to_hex(arg)
+  defp encode_params(arg) when is_integer(arg), do: "0x" <> Converter.to_hex(arg)
   defp encode_params("0x" <> _ = arg), do: arg
   defp encode_params(arg) when is_binary(arg), do: "0x" <> arg
   defp encode_params(arg), do: arg
