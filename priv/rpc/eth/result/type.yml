@@ -1,5 +1,5 @@
 ---
-- tx_log:
+- log:
     - log_index: "&to_int(_)"
     - transaction_index: "&to_int(_)"
     - transaction_hash: "_"
@@ -8,20 +8,9 @@
     - address: "_"
     - data: "_"
     - topics: "_"
-    - transaction_log_index: "&to_int(_)"
+    - removed: "_"
     # EtherScan and Hardhat do not support following fields.
     # - type: "&strip(_)"
-
-- log:
-    - removed: "_"
-    - log_index: "&to_int(_)"
-    - transaction_index: "&to_int(_)"
-    - transaction_hash: "_"
-    - block_hash: "_"
-    - block_height: "&to_int(block_number)"
-    - address: "_"
-    - data: "_"
-    - topics: "_"
 
 - trace:
     - trace_address: "&get_trace_address(_)"
@@ -79,10 +68,11 @@
     - s: "_"
     - v: "_"
     - standard_v: "&to_int(_)"
-    - logs: @tx_log
+    - logs: @log
     - logs_bloom: "_"
     - time: "&milli_to_date(timestamp)"
     - fees: "&get_tx_fees(*)"
+    - contract_address: "_"
     # EtherScan and Hardhat do not support following fields.
     # - tx_type: "&get_tx_type(*)"
     # - public_key: "&strip(_)"
