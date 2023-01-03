@@ -68,63 +68,56 @@ defmodule OcapRpc.Internal.EthRpc do
 
   defp get_tx_trace(resp) do
     case call("eth_getTransactionReceipt", [resp["hash"]]) do
-      nil ->
-        resp
-
-      receipt ->
-        block = call("eth_getBlockByNumber", [resp["blockNumber"], false])
-
-        receipt
-        |> Map.merge(resp)
-        |> Map.put("timestamp", block["timestamp"])
+      nil -> resp
+      receipt -> Map.merge(receipt, resp)
     end
   end
 
   defp get_block_trace(nil), do: nil
 
   defp get_block_trace(resp) do
-    tx_list = resp["transactions"]
-    blocktime = resp["timestamp"] |> Converter.to_int() |> Kernel.*(1000)
-    first_tx = List.first(tx_list)
+    # tx_list = resp["transactions"]
+    # blocktime = resp["timestamp"] |> Converter.to_int() |> Kernel.*(1000)
+    # first_tx = List.first(tx_list)
 
-    traces =
-      "trace_block"
-      |> call([resp["number"]])
-      |> Enum.group_by(fn tx -> tx["transactionHash"] end)
+    # traces =
+    #   "trace_block"
+    #   |> call([resp["number"]])
+    #   |> Enum.group_by(fn tx -> tx["transactionHash"] end)
 
-    rewards =
-      traces
-      |> Map.get(nil)
-      |> Enum.map(fn trace -> Map.put(trace, "timestamp", blocktime) end)
+    # rewards =
+    #   traces
+    #   |> Map.get(nil)
+    #   |> Enum.map(fn trace -> Map.put(trace, "timestamp", blocktime) end)
 
-    uncle_details = prepare_uncles(rewards, resp["number"], resp["uncles"])
+    # uncle_details = prepare_uncles(rewards, resp["number"], resp["uncles"])
 
-    transactions =
-      case is_map(first_tx) do
-        true ->
-          hashes = Enum.map(tx_list, fn tx -> [tx["hash"]] end)
-          receipts = call("eth_getTransactionReceipt", [hashes])
+    # transactions =
+    #   case is_map(first_tx) do
+    #     true ->
+    #       hashes = Enum.map(tx_list, fn tx -> [tx["hash"]] end)
+    #       receipts = call("eth_getTransactionReceipt", [hashes])
 
-          tx_list =
-            for {tx, receipt} <- Enum.zip(tx_list, receipts) do
-              (receipt || %{})
-              |> Map.merge(tx)
-            end
+    #       tx_list =
+    #         for {tx, receipt} <- Enum.zip(tx_list, receipts) do
+    #           (receipt || %{})
+    #           |> Map.merge(tx)
+    #         end
 
-          tx_list
-          |> Enum.map(fn tx ->
-            tx = Map.put(tx, "timestamp", blocktime + Converter.to_int(tx["transactionIndex"]))
-            Map.put(tx, "traces", update_traces(Map.get(traces, tx["hash"]), tx))
-          end)
+    #       tx_list
+    #       |> Enum.map(fn tx ->
+    #         tx = Map.put(tx, "timestamp", blocktime + Converter.to_int(tx["transactionIndex"]))
+    #         Map.put(tx, "traces", update_traces(Map.get(traces, tx["hash"]), tx))
+    #       end)
 
-        _ ->
-          tx_list
-      end
+    #     _ ->
+    #       tx_list
+    #   end
 
     resp
-    |> Map.put("transactions", transactions)
-    |> Map.put("rewards", rewards)
-    |> Map.put("uncles", uncle_details)
+    # |> Map.put("transactions", transactions)
+    # |> Map.put("rewards", rewards)
+    # |> Map.put("uncles", uncle_details)
   end
 
   defp update_traces(traces, tx) do
