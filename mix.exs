@@ -55,14 +55,14 @@ defmodule OcapRpc.MixProject do
 
       # utility belt
       {:utility_belt, "~> 0.16"},
-      {:chain_util, git: "https://github.com/StelaPlatform/chain_util.git"},
+      {:chain_util, git: "https://github.com/StelaPlatform/chain_util.git", tag: "v0.1.0"},
 
       # dev & test
       {:credo, "~> 1.0", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 0.5", only: [:dev], runtime: false},
       {:ex_doc, "~> 0.19", only: [:dev, :test], runtime: false},
       {:excheck, "~> 0.6", only: :test, runtime: false},
-      {:pre_commit_hook, "~> 1.2", only: [:dev, :test], runtime: false},
+      # {:pre_commit_hook, "~> 1.2", only: [:dev, :test], runtime: false},
       {:triq, "~> 1.3", only: :test, runtime: false},
 
       # test only
