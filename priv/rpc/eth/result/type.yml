@@ -126,6 +126,7 @@
     - size: "&to_int(_)"
     - state_root: "_"
     - time: "&to_date(timestamp)"
+    - timestamp: "&to_int(_)"
     - total_difficulty: "&to_int(_)"
     - transactions_root: "_"
     - transactions: @transaction
